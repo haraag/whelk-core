@@ -31,6 +31,7 @@ class Whelk {
         this.expander = ex
         this.version = version
         loadCoreData()
+        checkESConfig()
         log.info("Whelk started with storage ${storage}, index $elastic and expander.")
     }
 
@@ -39,6 +40,7 @@ class Whelk {
         this.elastic = es
         this.version = version
         loadCoreData()
+        checkESConfig()
         log.info("Whelk started with storage $storage and index $elastic")
     }
 
@@ -76,6 +78,21 @@ class Whelk {
 
     void loadVocabData() {
         this.vocabData = this.storage.locate(vocabUri, true).document.data
+    }
+
+    void checkESConfig() {
+        Map esConfigTemplate = this.elastic.getTemplate()
+        Map config = ElasticConfigGenerator.generate(esConfigTemplate,
+                                                     this.displayData)
+        Map mappings = this.elastic.getMappings()
+
+        validateESMappings(mappings, config)
+        return
+    }
+
+    void validateESMappings(Map mappings, Map config) {
+        // FIXME implement
+        return
     }
 
     Document store(Document document, String changedIn, String changedBy, String collection, boolean deleted, boolean createOrUpdate = true) {
