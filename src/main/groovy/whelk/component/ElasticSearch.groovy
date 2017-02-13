@@ -35,6 +35,8 @@ class ElasticSearch implements Index {
     static final int MAX_RETRY_TIMEOUT = 60*60*1000
     static final int DEFAULT_PAGE_SIZE = 50
 
+    static final String TEMPLATE_PATH = 'libris_es_config_template.json'
+
     Client client
     private String elastichost, elasticcluster
     String defaultType = "record"
@@ -119,6 +121,19 @@ class ElasticSearch implements Index {
         }
 
         return result
+    }
+
+    /**
+     * Get configuration template.
+     *
+     */
+    private Map getTemplate() {
+        def loader = getClass().classLoader
+        Map configTemplate = loader.getResourceAsStream(TEMPLATE_PATH).withStream {
+            mapper.readValue(it, Map)
+        }
+
+        return configTemplate
     }
 
     public ActionResponse performExecute(ActionRequest request) {
