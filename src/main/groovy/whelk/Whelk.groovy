@@ -91,7 +91,7 @@ class Whelk {
     }
 
     void validateESMappings(Map mappings, Map config) {
-        // FIXME implement
+        // TODO https://jira.kb.se/browse/LXL-269
         return
     }
 
